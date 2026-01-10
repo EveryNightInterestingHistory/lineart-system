@@ -1,0 +1,148 @@
+{
+  "id": "1765306306929",
+  "name": "йцу",
+  "client": "Вадииим",
+  "address": "йцу",
+  "description": "йцу",
+  "amount": 1,
+  "currency": "USD",
+  "status": "accepted",
+  "createdAt": "2025-12-09T18:51:46.929Z",
+  "history": [
+    {
+      "date": "2025-12-09T18:58:47.025Z",
+      "action": "section",
+      "text": "Создан раздел: АР (Инженер: Elyor)"
+    },
+    {
+      "date": "2025-12-11T10:06:46.599Z",
+      "action": "section",
+      "text": "Создан раздел: АР  (Инженер: Elyor)"
+    },
+    {
+      "date": "2026-01-02T19:48:39.581Z",
+      "action": "section",
+      "text": "Создан раздел: 1"
+    },
+    {
+      "date": "2026-01-02T23:18:29.001Z",
+      "action": "comment",
+      "text": "Добавлен комментарий: Automated verificati...",
+      "icon": "💬"
+    },
+    {
+      "date": "2026-01-03T10:51:01.542Z",
+      "action": "comment",
+      "text": "Добавлен комментарий: Тестовый комментарий...",
+      "icon": "💬"
+    },
+    {
+      "date": "2026-01-03T17:17:22.650Z",
+      "action": "comment",
+      "text": "Добавлен комментарий: 123",
+      "icon": "💬"
+    },
+    {
+      "date": "2026-01-03T18:27:24.666Z",
+      "action": "status_change",
+      "text": "Статус изменен на \"На проверку\"",
+      "icon": "🔄"
+    },
+    {
+      "date": "2026-01-03T18:37:40.076Z",
+      "action": "status_change",
+      "text": "Статус изменен на \"Принято\"",
+      "icon": "🔄"
+    },
+    {
+      "date": "2026-01-03T18:37:40.121Z",
+      "action": "archive",
+      "text": "Проект архивирован автоматически",
+      "icon": "📝"
+    }
+  ],
+  "sections": [
+    {
+      "id": "1765306708208",
+      "name": "Документы",
+      "engineer": "",
+      "files": [],
+      "status": "accepted"
+    },
+    {
+      "id": "1765306727025",
+      "name": "АР",
+      "engineer": "Elyor",
+      "status": "accepted",
+      "files": [
+        {
+          "name": "2.pdf",
+          "path": "http://localhost:3000/uploads/Вадииим-ЖК Тестовый/АР/2.pdf"
+        }
+      ]
+    },
+    {
+      "id": "1765447606599",
+      "name": "АР ",
+      "engineer": "Elyor",
+      "status": "accepted",
+      "files": [
+        {
+          "id": "1767381021699",
+          "name": "test_file.txt",
+          "path": "/uploads/Вадииим-ЖК Тестовый/АР/test_file.txt",
+          "comment": "Test comment from browser"
+        }
+      ]
+    },
+    {
+      "id": "1767383319581",
+      "name": "1",
+      "engineer": "",
+      "status": "accepted",
+      "startDate": null,
+      "dueDate": null,
+      "files": []
+    }
+  ],
+  "photos": [
+    "be21bc61c88db32ba207cfdfe69feb53.jpg"
+  ],
+  "additionalPersons": [],
+  "folderName": "Вадииим-ЖК Тестовый",
+  "engineerContracts": {
+    "Elyor": 200
+  },
+  "comments": [
+    {
+      "id": "1767460642649",
+      "text": "123",
+      "date": "2026-01-03T17:17:22.649Z",
+      "author": "Admin"
+    },
+    {
+      "id": "1767437461542",
+      "text": "Тестовый комментарий для проверки Telegram",
+      "date": "2026-01-03T10:51:01.542Z",
+      "author": "Admin"
+    },
+    {
+      "id": "1767395909001",
+      "text": "Automated verification comment",
+      "date": "2026-01-02T23:18:29.001Z",
+      "author": "Admin"
+    },
+    {
+      "id": "1767394741475",
+      "text": "Testing logging",
+      "date": "2026-01-02T22:59:01.475Z",
+      "author": "Admin"
+    },
+    {
+      "id": "1767394272627",
+      "text": "This is a test comment from AI",
+      "date": "2026-01-02T22:51:12.627Z",
+      "author": "Admin"
+    }
+  ]
+}

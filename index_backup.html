@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArchManager</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">A</div>
+                <span>ArchManager</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="dashboard">
+                    <span class="icon">📊</span> Дашборд
+                </button>
+                <button class="nav-item" data-tab="projects">
+                    <span class="icon">🏗️</span> Проекты
+                </button>
+                <button class="nav-item" data-tab="finances">
+                    <span class="icon">💰</span> Финансы
+                </button>
+                <button class="nav-item" data-tab="clients">
+                    <span class="icon">👥</span> Клиенты
+                </button>
+                <button class="nav-item" data-tab="employees">
+                    <span class="icon">👷‍♂️</span> Инженеры
+                </button>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">👤</div>
+                <div class="user-info">
+                    <div class="name">Архитектор</div>
+                    <div class="role">Администратор</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-bar">
+                <h1 id="page-title">Дашборд</h1>
+                <div class="actions">
+                    <button class="btn-icon">🔔</button>
+                    <button class="btn-icon">⚙️</button>
+                </div>
+            </header>
+
+            <!-- Views -->
+            <div id="dashboard-view" class="view active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Активные проекты</div>
+                        <div class="stat-value" id="stat-active-projects">0</div>
+                        <div class="stat-trend positive">В работе</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Выручка (мес)</div>
+                        <div class="stat-value-group">
+                            <div id="stat-revenue-usd">0 $</div>
+                            <div id="stat-revenue-uzs">0 сум</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Чистая прибыль</div>
+                        <div class="stat-value-group">
+                            <div id="stat-profit-usd">0 $</div>
+                            <div id="stat-profit-uzs">0 сум</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-card full-width">
+                        <h3>Финансовая динамика</h3>
+                        <div class="chart-placeholder" id="main-chart">
+                            <div class="bar" style="height: 60%"></div>
+                            <div class="bar" style="height: 80%"></div>
+                            <div class="bar" style="height: 40%"></div>
+                            <div class="bar" style="height: 90%"></div>
+                            <div class="bar" style="height: 70%"></div>
+                            <div class="bar" style="height: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-section">
+                    <h3>Последние проекты</h3>
+                    <div id="dashboard-projects-grid" class="compact-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="projects-view" class="view">
+                <div class="toolbar">
+                    <input type="text" placeholder="Поиск проекта..." class="search-input">
+                    <button class="btn-primary" onclick="openNewProjectModal()">+ Новый проект</button>
+                </div>
+                <div class="projects-grid" id="projects-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div id="finances-view" class="view">
+                <div class="finance-layout">
+                    <div class="transactions-panel">
+                        <div class="panel-header">
+                            <h3>Операции</h3>
+                            <button class="btn-sm" onclick="openModal('transaction-modal')">+ Добавить</button>
+                        </div>
+                        <ul class="transaction-list" id="transaction-list">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                    <div class="finance-summary">
+                        <div class="summary-card income">
+                            <span>Доходы</span>
+                            <div class="multi-currency-total">
+                                <h2 id="total-income-usd">0 $</h2>
+                                <h2 id="total-income-uzs">0 сум</h2>
+                            </div>
+                        </div>
+                        <div class="summary-card expense">
+                            <span>Расходы</span>
+                            <div class="multi-currency-total">
+                                <h2 id="total-expense-usd">0 $</h2>
+                                <h2 id="total-expense-uzs">0 сум</h2>
+                            </div>
+                        </div>
+                        <div class="summary-card profit">
+                            <span>Итого</span>
+                            <div class="multi-currency-total">
+                                <h2 id="total-net-usd">0 $</h2>
+                                <h2 id="total-net-uzs">0 сум</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="clients-view" class="view">
+                <div class="toolbar">
+                    <button class="btn-primary" onclick="openModal('client-modal')">+ Новый клиент</button>
+                </div>
+                <div class="compact-grid" id="clients-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div id="employees-view" class="view">
+                <div class="toolbar">
+                    <button class="btn-primary" onclick="openNewEmployeeModal()">+ Новый инженер</button>
+                </div>
+                <div class="compact-grid" id="employees-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <div id="project-details-view" class="view">
+                <div class="details-header">
+                    <button class="btn-secondary" onclick="closeProjectDetails()">← Назад</button>
+                    <div class="actions">
+                        <button class="btn-secondary" onclick="openHistoryModal()">📜 История</button>
+                        <button class="btn-secondary" onclick="editCurrentProject()">✎ Редактировать</button>
+                        <button class="btn-danger" onclick="deleteCurrentProject()">🗑 Удалить</button>
+                    </div>
+                </div>
+
+                <div class="project-hero">
+                    <div class="hero-content">
+                        <h1 id="detail-project-name">Название проекта</h1>
+                        <p id="detail-project-address">Адрес проекта</p>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span id="detail-project-status" class="status-badge">Статус</span>
+                            <span id="detail-project-created"
+                                style="font-size: 0.85rem; color: var(--text-secondary);">Создан: -</span>
+                        </div>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-box">
+                            <span class="label">Клиент</span>
+                            <span class="value" id="detail-project-client">-</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">Дата добавления</span>
+                            <span class="value" id="detail-project-deadline">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="details-card">
+                        <div class="card-header">
+                            <h3>Финансы</h3>
+                            <button class="btn-icon-sm" onclick="openAdvanceModal()">✎</button>
+                        </div>
+                        <div class="finance-breakdown">
+                            <div class="finance-row">
+                                <span>Сумма договора</span>
+                                <span id="detail-finance-total">0</span>
+                            </div>
+                            <div class="finance-row">
+                                <span>Аванс</span>
+                                <span id="detail-finance-advance">0</span>
+                            </div>
+                            <div class="finance-divider"></div>
+                            <div class="finance-row total">
+                                <span>Остаток</span>
+                                <span id="detail-finance-balance">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-card">
+                        <div class="card-header">
+                            <h3>Галерея</h3>
+                            <label class="btn-sm" style="cursor: pointer;">
+                                + Фото
+                                <input type="file" accept="image/*" hidden onchange="handlePhotoUpload(this)">
+                            </label>
+                        </div>
+                        <div class="gallery-grid" id="detail-gallery-grid">
+                            <!-- Photos -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sections-area">
+                    <div class="toolbar">
+                        <h3>Разделы проекта</h3>
+                        <button class="btn-primary" onclick="openNewSectionModal()">+ Новый раздел</button>
+                    </div>
+                    <div id="project-sections-container">
+                        <!-- Sections -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modals -->
+            <div id="client-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('client-modal')">&times;</span>
+                    <h2>Новый клиент</h2>
+                    <form id="client-form">
+                        <input type="text" name="name" placeholder="Имя / Название компании" required>
+                        <input type="text" name="phone" placeholder="Телефон">
+                        <input type="email" name="email" placeholder="Email">
+                        <button type="submit" class="btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="transaction-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('transaction-modal')">&times;</span>
+                    <h2>Новая операция</h2>
+                    <form id="transaction-form">
+                        <select name="type">
+                            <option value="income">Доход</option>
+                            <option value="expense">Расход</option>
+                        </select>
+                        <input type="text" name="description" placeholder="Описание" required>
+                        <div class="input-group">
+                            <input type="number" name="amount" placeholder="Сумма" required>
+                            <select name="currency">
+                                <option value="USD">USD ($)</option>
+                                <option value="UZS">UZS (сум)</option>
+                            </select>
+                        </div>
+                        <input type="date" name="date" required>
+                        <button type="submit" class="btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="section-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('section-modal')">&times;</span>
+                    <h2>Новый раздел</h2>
+                    <form id="section-form">
+                        <input type="text" name="name" placeholder="Название раздела" required>
+                        <select name="engineer">
+                            <option value="" disabled selected>Выберите инженера</option>
+                        </select>
+                        <button type="submit" class="btn-primary">Создать</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="advance-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('advance-modal')">&times;</span>
+                    <h2>Редактировать аванс</h2>
+                    <form id="advance-form">
+                        <input type="number" name="advance" placeholder="Сумма аванса" required>
+                        <button type="submit" class="btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="employee-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('employee-modal')">&times;</span>
+                    <h2>Новый инженер</h2>
+                    <form id="employee-form">
+                        <input type="hidden" name="id">
+                        <input type="text" name="name" placeholder="Имя" required>
+                        <input type="text" name="position" placeholder="Должность" required>
+                        <input type="tel" name="phone" placeholder="Телефон">
+                        <button type="submit" class="btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="project-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('project-modal')">&times;</span>
+                    <h2>Новый проект</h2>
+                    <form id="project-form">
+                        <input type="hidden" name="id">
+                        <input type="text" name="name" placeholder="Название проекта" required>
+                        <input type="text" name="address" placeholder="Адрес (местонахождение)">
+
+                        <div class="input-group">
+                            <select name="client" required>
+                                <option value="" disabled selected>Выберите клиента</option>
+                            </select>
+                            <button type="button" class="btn-icon" onclick="openModal('client-modal')"
+                                title="Добавить клиента">+</button>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="number" name="amount" placeholder="Сумма договора" required>
+                            <select name="currency">
+                                <option value="USD">USD ($)</option>
+                                <option value="UZS">UZS (сум)</option>
+                            </select>
+                        </div>
+
+                        <select name="status">
+                            <option value="sketch">Эскиз</option>
+                            <option value="in-progress">В процессе</option>
+                            <option value="completed">Завершен</option>
+                            <option value="delivered">Сдан</option>
+                        </select>
+
+                        <button type="submit" class="btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="history-modal" class="modal">
+                <div class="modal-content" style="width: 500px; max-height: 80vh; overflow-y: auto;">
+                    <span class="close" onclick="closeModal('history-modal')">&times;</span>
+                    <h2>История изменений</h2>
+                    <div id="project-history-list" class="history-list">
+                        <!-- History items -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

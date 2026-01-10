@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment files (содержат секреты!)
+.env
+.env.local
+.env.production
+
+# Credentials (ВАЖНО - не загружать в git!)
+creds.json
+google-credentials.json
+telegram-config.json
+
+# Backup files
+*.backup
+*.bak
+*.old
+backup_*/
+
+# Temp files
+temp/
+*.tmp
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# IDE
+.vscode/
+.idea/
+
+# Python cache (скрипты для разработки)
+__pycache__/
+*.pyc
+
+# Test files
+test_*.html
+
+# Large files
+*.pdf
+*.zip

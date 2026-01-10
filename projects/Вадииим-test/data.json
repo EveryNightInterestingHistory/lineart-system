@@ -1,0 +1,38 @@
+{
+  "id": "1768059446703",
+  "name": "test",
+  "client": "Вадииим",
+  "address": "",
+  "description": "",
+  "amount": 12,
+  "currency": "USD",
+  "status": "in-progress",
+  "createdAt": "2026-01-10T15:37:26.703Z",
+  "history": [
+    {
+      "date": "2026-01-10T15:37:46.366Z",
+      "action": "section",
+      "text": "Создан раздел: test (Инженер: Santa)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "1768059448167",
+      "name": "Документы",
+      "engineer": "",
+      "files": []
+    },
+    {
+      "id": "1768059466366",
+      "name": "test",
+      "engineer": "Santa",
+      "status": "in-progress",
+      "startDate": "2026-01-10",
+      "dueDate": "2026-01-17",
+      "files": []
+    }
+  ],
+  "photos": [],
+  "additionalPersons": [],
+  "folderName": "Вадииим-test"
+}
