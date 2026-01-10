@@ -110,7 +110,13 @@ export const MapManager = {
         // 1. Marker
         if (project.lat && project.lng) {
             const marker = L.marker([project.lat, project.lng], {
-                draggable: this.state.isEditing
+                draggable: this.state.isEditing,
+                icon: L.divIcon({
+                    className: 'custom-project-marker',
+                    html: `<div style="background: var(--accent-primary); width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);"></div>`,
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                })
             });
 
             if (marker.dragging) {

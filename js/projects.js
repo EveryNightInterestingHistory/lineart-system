@@ -3,7 +3,7 @@ import { state, currentProjectId, setCurrentProjectId, saveData, API_URL, curren
 import { MapManager } from './mapManager.js';
 import { renderFinanceChart, toggleTransactionsVisibility } from './finance.js';
 import { formatMoney, getStatusName, showToast, openModal, closeModal, populateSelect } from './utils.js';
-import { notifyStatusChange, notifyNewFile, notifyNewComment } from './telegram.js';
+import { notifyStatusChange, notifyNewFile, notifyNewComment, notifyNewProject } from './telegram.js';
 
 // --- Projects Module ---
 
@@ -961,6 +961,10 @@ export function setupProjectListeners() {
                     state.projects.push(newProject);
                     saveData();
                     syncProject(newProject);
+
+                    // Notify Telegram
+                    notifyNewProject(newProject);
+
                     showToast('Проект создан!', 'success');
                 }
 
