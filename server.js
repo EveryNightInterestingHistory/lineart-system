@@ -19,6 +19,28 @@ const projectArchiver = require('./server/archiver');
 // Connect to Database
 connectDB();
 
+// 🛠️ AUTO-CREATE ADMIN USER (Bootstrap for new DB)
+const mongoose = require('mongoose');
+mongoose.connection.once('open', async () => {
+    try {
+        const adminCount = await User.countDocuments({ username: 'Jahongir' });
+        if (adminCount === 0) {
+            console.log('⚡ Creating default admin user...');
+            await User.create({
+                username: 'Jahongir',
+                password: '45144514', // Plain text for now
+                role: 'admin',
+                telegramChatId: null
+            });
+            console.log('✅ Default admin user created: Jahongir');
+        } else {
+            console.log('🔒 Admin user already exists');
+        }
+    } catch (err) {
+        console.error('❌ Failed to create default admin:', err);
+    }
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
