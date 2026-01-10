@@ -11,30 +11,43 @@ const stream = require('stream');
  * @param {string} mimeType - MIME-тип файла
  * @returns {Promise<Object>} - Информация о загруженном файле
  */
+/**
+ * Helper to get authenticated Google Auth client
+ */
+function getAuthClient() {
+    const credentialsEnv = process.env.GOOGLE_DRIVE_CREDENTIALS;
+
+    // Check if environment variable is a JSON string
+    if (credentialsEnv && credentialsEnv.trim().startsWith('{')) {
+        return new google.auth.GoogleAuth({
+            credentials: JSON.parse(credentialsEnv),
+            scopes: ['https://www.googleapis.com/auth/drive.file'],
+        });
+    }
+
+    // Fallback to file path
+    const credentialsPath = credentialsEnv || path.join(__dirname, '../google-credentials.json');
+    if (!fs.existsSync(credentialsPath)) {
+        throw new Error('Google Drive credentials failed (File not found & ENV not JSON)');
+    }
+
+    return new google.auth.GoogleAuth({
+        keyFile: credentialsPath,
+        scopes: ['https://www.googleapis.com/auth/drive.file'],
+    });
+}
+
+/**
+ * Загружает файл в Google Drive
+ * @param {string|Buffer} fileSource - Путь к файлу или Buffer
+ * @param {string} fileName - Имя файла в Google Drive
+ * @param {string} folderId - ID папки в Google Drive (опционально)
+ * @param {string} mimeType - MIME-тип файла
+ * @returns {Promise<Object>} - Информация о загруженном файле
+ */
 async function uploadToGoogleDrive(fileSource, fileName, folderId = null, mimeType = 'application/octet-stream') {
     try {
-        // Аутентификация
-        let auth;
-        const credentialsEnv = process.env.GOOGLE_DRIVE_CREDENTIALS;
-
-        // Check if environment variable is a JSON string or a file path
-        if (credentialsEnv && credentialsEnv.trim().startsWith('{')) {
-            auth = new google.auth.GoogleAuth({
-                credentials: JSON.parse(credentialsEnv),
-                scopes: ['https://www.googleapis.com/auth/drive.file'],
-            });
-        } else {
-            // Fallback to file path
-            const credentialsPath = credentialsEnv || path.join(__dirname, '../google-credentials.json');
-            if (!fs.existsSync(credentialsPath)) {
-                throw new Error('Google Drive credentials failed (File not found & ENV not JSON)');
-            }
-            auth = new google.auth.GoogleAuth({
-                keyFile: credentialsPath,
-                scopes: ['https://www.googleapis.com/auth/drive.file'],
-            });
-        }
-
+        const auth = getAuthClient();
         const drive = google.drive({ version: 'v3', auth });
 
         // Метаданные файла
@@ -102,14 +115,7 @@ async function uploadToGoogleDrive(fileSource, fileName, folderId = null, mimeTy
  */
 async function createOrFindFolder(folderName, parentFolderId = null) {
     try {
-        const credentialsPath = process.env.GOOGLE_DRIVE_CREDENTIALS ||
-            path.join(__dirname, '../google-credentials.json');
-
-        const auth = new google.auth.GoogleAuth({
-            keyFile: credentialsPath,
-            scopes: ['https://www.googleapis.com/auth/drive.file'],
-        });
-
+        const auth = getAuthClient();
         const drive = google.drive({ version: 'v3', auth });
 
         // Поиск существующей папки

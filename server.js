@@ -153,6 +153,23 @@ app.post('/api/telegram/notify', (req, res) => {
     res.json({ success: true });
 });
 
+// ✅ GET Telegram Config (Fix for 404 error)
+app.get('/api/telegram/config', async (req, res) => {
+    // In future: load from User preferences or global config.
+    // For now, return default "Enabled" state so frontend sends notifications.
+    res.json({
+        telegram: {
+            enabled: true,
+            notifications: {
+                statusChange: true,
+                newFile: true,
+                newComment: true,
+                deadline: true
+            }
+        }
+    });
+});
+
 // Master Key Reset
 app.post('/api/reset-password', async (req, res) => {
     const { username, newPassword, secretKey } = req.body;
@@ -263,7 +280,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         // 1. Create/Find Folder in Drive
         let projectFolderId;
         if (googleDrive.isConfigured()) {
-            projectFolderId = await googleDrive.createOrFindFolder(folderName);
+            const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID || null;
+            projectFolderId = await googleDrive.createOrFindFolder(folderName, rootFolderId);
             if (sectionName) {
                 const safeSection = sectionName.replace(/[^a-z0-9а-яё \-_]/gi, '').trim();
                 projectFolderId = await googleDrive.createOrFindFolder(safeSection, projectFolderId);
