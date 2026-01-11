@@ -270,6 +270,14 @@ app.post('/api/delete-project', async (req, res) => {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
+// Log Drive Config on Start
+const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
+if (driveFolderId) {
+    console.log(`📂 Google Drive Folder ID configured: ${driveFolderId.substring(0, 5)}...`);
+} else {
+    console.warn('⚠️ Google Drive Folder ID is MISSING!');
+}
+
 app.post('/api/upload', upload.single('file'), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ success: false, message: 'No file' });
@@ -280,7 +288,11 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         // 1. Create/Find Folder in Drive
         let projectFolderId;
         if (googleDrive.isConfigured()) {
-            const rootFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID || null;
+            // HARCODED ID FOR DEBUGGING
+            const rootFolderId = '1WcLcIaJe3gwhz8dgTrI3XNmW3p96xN7f';
+
+            console.log(`📂 Using HARDCODED Drive Folder ID: ${rootFolderId}`);
+
             projectFolderId = await googleDrive.createOrFindFolder(folderName, rootFolderId);
             if (sectionName) {
                 const safeSection = sectionName.replace(/[^a-z0-9а-яё \-_]/gi, '').trim();
