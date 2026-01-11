@@ -115,6 +115,8 @@ async function uploadToGoogleDrive(fileSource, fileName, folderId = null, mimeTy
  */
 async function createOrFindFolder(folderName, parentFolderId = null) {
     try {
+        console.log(`🔍 DEBUG: createOrFindFolder called for '${folderName}'. Parent: ${parentFolderId}`);
+
         const auth = getAuthClient();
         const drive = google.drive({ version: 'v3', auth });
 
@@ -124,6 +126,8 @@ async function createOrFindFolder(folderName, parentFolderId = null) {
             query += ` and '${parentFolderId}' in parents`;
         }
 
+        console.log(`🔍 DEBUG: Drive Search Query: ${query}`);
+
         const searchResponse = await drive.files.list({
             q: query,
             fields: 'files(id, name)',
@@ -131,27 +135,31 @@ async function createOrFindFolder(folderName, parentFolderId = null) {
         });
 
         if (searchResponse.data.files.length > 0) {
-            console.log('Folder found:', searchResponse.data.files[0].id);
+            console.log('✅ Folder found:', searchResponse.data.files[0].id);
             return searchResponse.data.files[0].id;
         }
+
+        console.log(`⚠️ Folder not found. Creating new one... (Parent: ${parentFolderId})`);
 
         // Создание новой папки
         const fileMetadata = {
             name: folderName,
             mimeType: 'application/vnd.google-apps.folder',
-            parents: parentFolderId ? [parentFolderId] : undefined
+            parents: parentFolderId ? [parentFolderId] : []
         };
+
+        console.log(`🔍 DEBUG: Creating folder with metadata:`, JSON.stringify(fileMetadata));
 
         const createResponse = await drive.files.create({
             requestBody: fileMetadata,
-            fields: 'id'
+            fields: 'id' // 'id, parents' to debug
         });
 
-        console.log('Folder created:', createResponse.data.id);
+        console.log('✅ Folder created:', createResponse.data.id);
         return createResponse.data.id;
 
     } catch (error) {
-        console.error('Error creating/finding folder:', error);
+        console.error('❌ Error creating/finding folder:', error);
         throw error;
     }
 }
