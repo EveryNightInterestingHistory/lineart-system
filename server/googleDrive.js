@@ -21,7 +21,7 @@ function getAuthClient() {
     if (credentialsEnv && credentialsEnv.trim().startsWith('{')) {
         return new google.auth.GoogleAuth({
             credentials: JSON.parse(credentialsEnv),
-            scopes: ['https://www.googleapis.com/auth/drive.file'],
+            scopes: ['https://www.googleapis.com/auth/drive'],
         });
     }
 
@@ -33,7 +33,7 @@ function getAuthClient() {
 
     return new google.auth.GoogleAuth({
         keyFile: credentialsPath,
-        scopes: ['https://www.googleapis.com/auth/drive.file'],
+        scopes: ['https://www.googleapis.com/auth/drive'],
     });
 }
 
