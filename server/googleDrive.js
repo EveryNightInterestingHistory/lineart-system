@@ -47,6 +47,8 @@ function getAuthClient() {
  */
 async function uploadToGoogleDrive(fileSource, fileName, folderId = null, mimeType = 'application/octet-stream') {
     try {
+        console.log(`🔍 uploadToGoogleDrive called. folderId: ${folderId}, fileName: ${fileName}`);
+
         const auth = getAuthClient();
         const drive = google.drive({ version: 'v3', auth });
 
@@ -55,6 +57,8 @@ async function uploadToGoogleDrive(fileSource, fileName, folderId = null, mimeTy
             name: fileName,
             parents: folderId ? [folderId] : undefined
         };
+
+        console.log(`🔍 fileMetadata:`, JSON.stringify(fileMetadata));
 
         // Подготовка тела запроса (Stream)
         let mediaBody;
