@@ -285,22 +285,26 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         const folderName = req.body.folderName || 'LineART Projects';
         const sectionName = req.body.sectionName || '';
 
-        // 1. Create/Find Folder in Drive
-        let projectFolderId;
-        if (googleDrive.isConfigured()) {
-            // HARCODED ID FOR DEBUGGING
-            const rootFolderId = '1WcLcIaJe3gwhz8dgTrI3XNmW3p96xN7f';
+        // 1. SKIP Create/Find Folder for debugging
+        // let projectFolderId;
+        // if (googleDrive.isConfigured()) {
+        //     // HARCODED ID FOR DEBUGGING
+        //     const rootFolderId = '1WcLcIaJe3gwhz8dgTrI3XNmW3p96xN7f';
 
-            console.log(`📂 Using HARDCODED Drive Folder ID: ${rootFolderId}`);
+        //     console.log(`📂 Using HARDCODED Drive Folder ID: ${rootFolderId}`);
 
-            projectFolderId = await googleDrive.createOrFindFolder(folderName, rootFolderId);
-            if (sectionName) {
-                const safeSection = sectionName.replace(/[^a-z0-9а-яё \-_]/gi, '').trim();
-                projectFolderId = await googleDrive.createOrFindFolder(safeSection, projectFolderId);
-            }
-        } else {
-            throw new Error('Google Drive not configured');
-        }
+        //     projectFolderId = await googleDrive.createOrFindFolder(folderName, rootFolderId);
+        //     if (sectionName) {
+        //         const safeSection = sectionName.replace(/[^a-z0-9а-яё \-_]/gi, '').trim();
+        //         projectFolderId = await googleDrive.createOrFindFolder(safeSection, projectFolderId);
+        //     }
+        // } else {
+        //     throw new Error('Google Drive not configured');
+        // }
+
+        // DEBUG: Force upload to root folder
+        const projectFolderId = '1WcLcIaJe3gwhz8dgTrI3XNmW3p96xN7f';
+        console.log('🚧 DEBUG: Force uploading to root ID:', projectFolderId);
 
         // 2. Upload
         const result = await googleDrive.uploadToGoogleDrive(

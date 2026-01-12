@@ -43,7 +43,12 @@ function initializeBot() {
 
     // Error handling
     bot.on('polling_error', (error) => {
-        console.error('Telegram Polling Error:', error.code); // Suppress full stack for timeouts
+        if (error.code === 'ETELEGRAM' && error.message.includes('409 Conflict')) {
+            // Suppress conflict errors (happens during re-deploy or conflicting instances)
+            console.warn('⚠️ Telegram Conflict (409): Another instance is active. Ignoring.');
+        } else {
+            console.error('Telegram Polling Error:', error.code || error.message);
+        }
     });
 }
 
