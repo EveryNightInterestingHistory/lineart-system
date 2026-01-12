@@ -279,6 +279,7 @@ if (driveFolderId) {
 }
 
 app.post('/api/upload', upload.single('file'), async (req, res) => {
+    console.log('📥 /api/upload HIT! File:', req.file ? req.file.originalname : 'NO FILE');
     try {
         if (!req.file) return res.status(400).json({ success: false, message: 'No file' });
 
